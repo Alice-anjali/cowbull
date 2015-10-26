@@ -1,0 +1,42 @@
+<html>
+<head>
+  <script type="text/javascript" src="jquery-1.11.0.min.js"></script>
+  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+  <script>
+   	var socket = io();
+		</script>
+  <link rel="stylesheet" type="text/css" href="CSS/main.css" />
+    <script type="text/javascript" src="main.js"></script>
+</head>
+<body>
+  <div id='title'>COW - BULL</div>
+  <div class='info'>
+    <p></p>
+  </div>
+  <div class='game'>
+    <div id="titleqstn">_ _ _ _</div>
+    <div id="titlemarks">C/B</div>
+    <div id="answers">
+      <div class = "container1">
+        <div id = "suggestions">
+          <ol class= "answerlist">
+          </ol>
+        </div>
+      </div>
+      <div class = "container2">
+        <div id = "marks">
+          <ul style="list-style-type:none" class="markslist">
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class = "container3">
+    <input type = "text" id = "inputbox" placeholder=" Enter word here" onkeydown="newword(this)"/>
+    <br><br>
+    <center><button class='reset' onclick="reset()">Reset</button></center>
+    <br><br>
+    <div id = 'connect'>Connected with : <div id='opponent'>Noone</div></div>
+  </div>
+</body>
+</html>

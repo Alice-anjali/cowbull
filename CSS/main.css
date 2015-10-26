@@ -1,0 +1,93 @@
+#title{
+	color: blue;
+	text-align: center;
+	font-size: 30px;
+	font-family: sans-serif;
+	margin: 0px;
+}
+@media only screen and (min-device-width: 600px){
+	.game{
+	position:relative;
+	overflow: hidden;
+	display: inline-block;
+	border: 2px solid black;
+	border-spacing: 0px ;
+	width: 55%;
+	}
+}
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+  /* iPhone, Android rules here */
+	.game{
+	border: 2px solid black;
+	border-spacing: 0px ;
+	margin: auto;
+	width: 40%;
+	}
+}
+.info{
+	position:relative;
+	overflow: hidden;
+	display: inline-block;
+	font-size: 20px;
+	width: 20%;
+	font-family: sans-serif;
+	float:left;
+	margin-left: 10px;
+}
+#titleqstn{
+  display : inline-block;
+  position : relative;
+  float : left;
+  margin-left : 10%;
+  width: 60%;
+  font-size : 40px;
+  color : blue;
+}
+#titlemarks{
+  display : inline-block;
+  position : relative;
+  width: 20%;
+  font-size : 40px;
+  color : blue;
+}
+.container1{
+  position: relative;
+  display: inline-block;
+  width : 60%;
+
+}
+.container2{
+  position: relative;
+  display: inline-block;
+  width : 20%;
+}
+#suggestions{
+  margin-left: 5%;
+  font-size : 40px;
+}
+#marks{
+  font-size : 40px;
+  margin-left: 20%;
+}
+#connect{
+	font-size : 30px;
+	color : blue;
+}
+.container3{
+  position: relative;
+  display: inline-block;
+	float: right;
+	margin-top : 1%;
+	width: 20%;
+}
+#inputbox{
+	font-size: 20px;
+	border-color: green;
+	border-width: 3px;
+}
+button{
+	height: 5%;
+	width: 50%;
+	color: green;
+	font-size: 100%;
+}
