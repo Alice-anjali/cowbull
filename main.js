@@ -13,7 +13,10 @@ jQuery(document).ready(function($){
   if(multi)
     sendWord = prompt("Enter a word to send to opponent !").toUpperCase();
   else
+  {
+    socket.disconnect();
     mainWord = prompt("Enter the hidden word to play !").toUpperCase();
+  }
   if(multi && !connected)
   {
     $('input').hide();
@@ -145,7 +148,7 @@ socket.on('newgame',function(word){
 socket.on('askgamereset',function(){
   if(confirm(opponentName + " has asked to reset the game. Do you wish to accept ?"))
   {
-    socket.emit('gamereset'); 
+    socket.emit('gamereset');
   }
   else
   {
