@@ -3,7 +3,7 @@ var mainWord;
 var connected = false;
 var noOfAns = 0;
 var currAns;
-var cow,bull;
+var cow,bull,room;
 var game =1 , multi =false;
 var playerName , opponentName;
 jQuery(document).ready(function($){
@@ -11,7 +11,11 @@ jQuery(document).ready(function($){
   $('.info').text("Hello "+playerName);
   multi = confirm("Do you want to play multiplayer ? ");
   if(multi)
-    sendWord = prompt("Enter a word to send to opponent !").toUpperCase();
+  {
+    socket.emit('newuser' , playerName);
+    room=prompt("Enter the name of the room you want to enter. If the room doesn't exist , a new room will be created.");
+    socket.emit('addtoroom',room);
+  }
   else
   {
     socket.disconnect();
@@ -100,7 +104,7 @@ var checkwin = function(){
     document.getElementById('titleqstn').innerHTML = mainWord;
     $('#titleqstn').css('color' , 'red');
     $('#titlemarks').css('color' , 'red');
-    socket.emit('message' , opponentName + " has lost !");
+    socket.emit('message' , playerName + " has lost !");
   }
 };
 //resets the game.

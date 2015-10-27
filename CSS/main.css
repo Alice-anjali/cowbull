@@ -91,3 +91,10 @@ button{
 	color: green;
 	font-size: 100%;
 }
+#room{
+	font-size : 25px;
+	color : green;
+}
+#playerlist{
+	font-size : 20px;
+}
