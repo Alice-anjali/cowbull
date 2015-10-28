@@ -98,3 +98,19 @@ button{
 #playerlist{
 	font-size : 20px;
 }
+#chatbox{
+	border : 2px solid black;
+	font: 13px Helvetica, Arial;
+	margin-right: 10%;
+	padding: 0px;
+	height: auto;
+};
+
+#m{
+	position: relative;
+}
+
+#sendbutton { margin-left: 1%;width: 25%; background: rgb(130, 224, 255); border: 1px solid black; }
+#messages { list-style-type: none; margin: 0; padding: 0; height : 30%; position: relative; overflow: scroll;}
+#messages li { padding: 5px 10px; }
+#messages li:nth-child(odd) { background: #eee; }

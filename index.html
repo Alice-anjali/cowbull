@@ -7,6 +7,8 @@
 		</script>
   <link rel="stylesheet" type="text/css" href="CSS/main.css" />
     <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="game.js"></script>
+    <script type="text/javascript" src="chatbox.js"></script>
 </head>
 <body>
   <div id='title'>COW - BULL</div>
@@ -38,10 +40,11 @@
     <br><br>
     <div id = 'connect'>Connected with : <div id='opponent'>Noone</div></div>
     <br><br>
-    <div id='room'>
-      <ul id='playerlist'>
-
+    <div id='chatbox'>
+      <ul id='messages'>
       </ul>
+        <input id="m" autocomplete="off" /><button id='sendbutton' onclick = "sendmessage()">Send</button>
+    </div>
     </div>
   </div>
 </body>
