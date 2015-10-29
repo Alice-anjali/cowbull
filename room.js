@@ -6,7 +6,7 @@ function Room(name , id){
 }
 Room.prototype.addPerson = function(personID){
   if(this.available){
-    this.person.push(personID);
+    this.people.push(personID);
   }
 };
 module.exports = Room;

@@ -23,14 +23,14 @@ var newword = function(ele) {
         if(check(currAns)){
           $('.answerlist').append("<li>" + currAns + "</li>");
           ele.value = '';
-          $('input').css('border-color' , 'green');
+          $('#inputbox').css('border-color' , 'green');
           generatecb(currAns);
           $('.markslist').append("<li>" + cow + "/" + bull + "</li>");
           noOfAns++;
           checkwin();
         }
         else{
-          $('input').css('border-color' , 'red');
+          $('#inputbox').css('border-color' , 'red');
         }
     }
 };
@@ -75,7 +75,7 @@ var checkwin = function(){
   if(currAns === mainWord)
   {
     game = 0;
-    $('.info').append("<br> You have won !!");
+    $('.info').prepend("<br> You have won !!");
     $('.game').css('border-color' , 'green');
     $('#titleqstn').css('color' , 'green');
     $('#titlemarks').css('color' , 'green');
@@ -85,7 +85,7 @@ var checkwin = function(){
   else if (noOfAns == 9)
   {
     game = 0;
-    $('.info').append("<br> You have lost !!");
+    $('.info').prepend("<br> You have lost !!");
     $('.game').css('border-color' , 'red');
     document.getElementById('titleqstn').innerHTML = mainWord;
     $('#titleqstn').css('color' , 'red');

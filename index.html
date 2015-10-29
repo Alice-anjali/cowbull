@@ -13,7 +13,30 @@
 <body>
   <div id='title'>COW - BULL</div>
   <div class='info'>
-    <p></p>
+    <br>
+    <div class="sendwordbox">
+      Type a word to send to the room !
+      <br><br>
+      <input id="inputsendbox"/>
+      <button id='boxsendbutton' onclick = "sendnewWord()">Send</button>
+    </div>
+    <br><br>
+    <div class='createroomdiv'>
+      Input here to create a new room.
+      <input id='createroominput'/>
+      <button id='createroombutton' onclick="createroom()">
+        Create
+      </button>
+    </div>
+    <div class='joinroomdiv'>
+      Type the name of a room to join.
+      <input id='joinroominput'/>
+      <button id='joinroombutton' onclick="joinroom()">
+        Join
+      </button>
+      <br>Available Rooms :
+      <ul id='roomlist'></ul>
+    </div>
   </div>
   <div class='game'>
     <div id="titleqstn">_ _ _ _</div>

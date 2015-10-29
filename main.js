@@ -1,32 +1,67 @@
 var sendWord;
 var connected = false;
-
 var room;
 var multi =false;
 var opponentName;
+var roomlist = {};
 jQuery(document).ready(function($){
+  $('.createroomdiv').hide();
+  $('.joinroomdiv').hide();
+  $('.sendwordbox').hide();
+  $('#chatbox').hide();
   playerName = prompt("Enter your Name");
-  $('.info').text("Hello "+playerName);
-  //multi = confirm("Do you want to play multiplayer ? ");
-  //if(multi)
-//  {
-  //  socket.emit('newuser' , playerName);
-  //  room=prompt("Enter the name of the room you want to enter. If the room doesn't exist , a new room will be created.");
-  //  socket.emit('addtoroom',room);
-//  }
-//  else
-//  {
-//    socket.disconnect();
-    var temp = prompt("Enter the hidden word to play !").toUpperCase();
+  $('.info').prepend("<br>Hello "+playerName);
+  multi = confirm("Do you want to play multiplayer ? ");
+  if(multi)
+ {
+    socket.emit('join',playerName);
+    //room=prompt("Enter the name of the room you want to enter. If the room doesn't exist , a new room will be created.");
+    //socket.emit('createroom',room);
+    $('.createroomdiv').show();
+    $('.joinroomdiv').show();
+  }
+  else
+  {
+    $('.sendwordbox').hide();
+    $('#chatbox').hide();
+    socket.disconnect();
+    var temp;
+    do{
+        temp = prompt("Enter the hidden word to play !").toUpperCase();
+    }while(!check(temp));
     startagame(temp);
-//  }
-//  if(multi && !connected)
-//  {
-//    $('#inputbox').hide();
-//    socket.emit('getnewgame' , playerName);
-//    }
+  }
+  //if(multi && !connected)
+  //{
+  //  $('#inputbox').hide();
+  //  socket.emit('getnewgame' , playerName);
+  // }
 });
-
+socket.on('addroomlist' , function(name , id){
+  roomlist[name] = id;
+  console.log(' Room ' + name + " created with id " + id);
+  if(id!==undefined)
+    $('#roomlist').append('<li>' + name + '</li>');
+});
+var createroom = function(){
+  var ele = document.getElementById('createroominput');
+  socket.emit('createroom',ele.value);
+  ele.value ='';
+  $('#chatbox').show();
+  $('.sendwordbox').show();
+  $('.createroomdiv').hide();
+  $('.joinroomdiv').hide();
+};
+var joinroom = function(){
+  var ele = document.getElementById('joinroominput');
+  console.log(" Sending value " + ele.value + "  " + roomlist[ele.value]);
+  socket.emit('joinRoom',roomlist[ele.value]);
+  ele.value ='';
+  $('#chatbox').show();
+  $('.sendwordbox').show();
+  $('.createroomdiv').hide();
+  $('.joinroomdiv').hide();
+}
 var reset = function(){
   if(!multi)
   {
