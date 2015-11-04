@@ -62,17 +62,16 @@ io.on('connection', function(socket){
      //}
   });
   socket.on('chat-message' , function(msg,playerName){
-    socket.emit('chat-message' ,playerName + " : " + msg);
-    socket.broadcast.emit('chat-message' ,playerName + " : " + msg);
+    io.sockets.in(socket.room).emit('chat-message' ,playerName + " : " + msg);
   });
   socket.on('message' , function(msg){
-    socket.emit('message' , msg);
+    io.sockets.in(socket.room).emit('message' , msg);
   });
   socket.on('getnewgame' , function(name){
     socket.broadcast.emit('getnewgame',name);
   });
-  socket.on('newgame' , function(word){
-    socket.broadcast.emit('newgame',word);
+  socket.on('newgame' , function(word , playerName){
+    socket.broadcast.emit('newgame',word , playerName);
   });
   socket.on('gamereset' , function(){
     io.emit('gamereset');

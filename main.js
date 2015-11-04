@@ -4,11 +4,13 @@ var room;
 var multi =false;
 var opponentName;
 var roomlist = {};
+var recievedword;
 jQuery(document).ready(function($){
   $('.createroomdiv').hide();
   $('.joinroomdiv').hide();
   $('.sendwordbox').hide();
   $('#chatbox').hide();
+  $('.acceptwordbox').hide();
   playerName = prompt("Enter your Name");
   $('.info').prepend("<br>Hello "+playerName);
   multi = confirm("Do you want to play multiplayer ? ");
@@ -19,6 +21,8 @@ jQuery(document).ready(function($){
     //socket.emit('createroom',room);
     $('.createroomdiv').show();
     $('.joinroomdiv').show();
+    $('.game').hide();
+    $('#inputbox').hide();
   }
   else
   {
@@ -62,6 +66,17 @@ var joinroom = function(){
   $('.createroomdiv').hide();
   $('.joinroomdiv').hide();
 }
+var sendnewWord = function()
+{
+  var ele = document.getElementById('inputsendbox');
+  console.log(" Sending word : " + ele.value);
+  ele.value = '';
+  sendWord = ele.value;
+  socket.emit('newgame' , sendWord , playerName);
+}
+var acceptnewWord = function(){
+  startagame(recievedword);
+}
 var reset = function(){
   if(!multi)
   {
@@ -95,13 +110,14 @@ socket.on('getnewgame' , function(name){
     socket.emit('getnewgame',playerName);
   }
 });
-socket.on('newgame',function(word){
+socket.on('newgame',function(word , playerName){
   console.log("newgame ping recieved");
-  //console.log("Word is " + word);
-  mainWord = word;
-  $('.info').append("<br>New Word recieved ! <br>Start playing !");
-  connected = true;
-  $('input').show();
+  if(game==0)
+  {
+    $('#recievedfromtext').text("A new Word is recieved from " + playerName);
+    $('.acceptwordbox').show();
+    recievedword = word;
+  }
 });
 socket.on('askgamereset',function(){
   if(confirm(opponentName + " has asked to reset the game. Do you wish to accept ?"))
