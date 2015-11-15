@@ -55,27 +55,39 @@ var createroom = function(){
   $('.sendwordbox').show();
   $('.createroomdiv').hide();
   $('.joinroomdiv').hide();
+  $('#roomname').text(ele.value);
 };
 var joinroom = function(){
   var ele = document.getElementById('joinroominput');
   console.log(" Sending value " + ele.value + "  " + roomlist[ele.value]);
   socket.emit('joinRoom',roomlist[ele.value]);
-  ele.value ='';
   $('#chatbox').show();
   $('.sendwordbox').show();
   $('.createroomdiv').hide();
   $('.joinroomdiv').hide();
+  $('#roomname').text(ele.value);
+  ele.value ='';
 }
 var sendnewWord = function()
 {
   var ele = document.getElementById('inputsendbox');
   console.log(" Sending word : " + ele.value);
-  ele.value = '';
-  sendWord = ele.value;
-  socket.emit('newgame' , sendWord , playerName);
+  if(check(ele.value)){
+    sendWord = ele.value.toUpperCase();
+    socket.emit('newgame' , sendWord , playerName);
+    $('#inputsendbox').css('border-color' , 'green');
+    ele.value = '';
+  }
+  else{
+    $('#inputsendbox').css('border-color' , 'red');
+  }
 }
 var acceptnewWord = function(){
   startagame(recievedword);
+  $('.acceptwordbox').hide();
+}
+var rejectnewWord = function(){
+  $('.acceptwordbox').hide();
 }
 var reset = function(){
   if(!multi)
@@ -100,33 +112,13 @@ var reset = function(){
 var initializegame = function(){
   game = 1;
 };
-socket.on('getnewgame' , function(name){
-  //console.log("Get newgame ping recieved");
-  opponentName = name;
-  $('#opponent').text(opponentName);
-  socket.emit('newgame',sendWord);
-  if(!connected)
-  {
-    socket.emit('getnewgame',playerName);
-  }
-});
 socket.on('newgame',function(word , playerName){
-  console.log("newgame ping recieved");
   if(game==0)
   {
     $('#recievedfromtext').text("A new Word is recieved from " + playerName);
     $('.acceptwordbox').show();
     recievedword = word;
-  }
-});
-socket.on('askgamereset',function(){
-  if(confirm(opponentName + " has asked to reset the game. Do you wish to accept ?"))
-  {
-    socket.emit('gamereset');
-  }
-  else
-  {
-    socket.emit('message' , "Reset Denied");
+    console.log('recieved : ' + word);
   }
 });
 socket.on('gamereset',function(){

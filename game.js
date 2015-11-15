@@ -4,9 +4,9 @@ var currAns;
 var cow=0 , bull=0;
 var game =0;
 var playerName;
-var startagame = function(word)
+var startagame = function(pword)
 {
-  mainWord = word;
+  mainWord = pword;
   game =1;
   noOfAns = 0;
   document.getElementById('titleqstn').innerHTML = "_ _ _ _";
@@ -15,6 +15,9 @@ var startagame = function(word)
   $('#titlemarks').css('color' , 'black');
   $('.markslist').children().remove();
   $('.answerlist').children().remove();
+  $('.game').show();
+  $('#inputbox').show();
+  $('acceptwordbox').show();
 };
 
 var newword = function(ele) {

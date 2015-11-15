@@ -11,13 +11,12 @@ app.get('/', function(req, res){
 });
 app.use(require('express').static(__dirname));
 io.on('connection', function(socket){
-
   socket.on('join' , function(name){
     roomId = null;
     people[socket.id] = {"name" : name , "room" : roomId};
     console.log("Player " + name + " connected");
     socket.emit('update-people' , people);
-    socket.emit('addroomlist' , {rooms : rooms});
+    //socket.emit('addroomlist' , {rooms : rooms});
     clients.push(socket);
     for (var roomid in rooms) {
       socket.emit('addroomlist' , rooms[roomid].name , roomid);
@@ -34,7 +33,7 @@ io.on('connection', function(socket){
       room.addPerson(socket.id);
       people[socket.id].room = id;
       console.log("Room "+rooms[id].name+" created with id " + id  );
-
+      socket.broadcast.emit('addroomlist' , name ,id);
     }
     else
     {
@@ -44,12 +43,12 @@ io.on('connection', function(socket){
   socket.on('joinRoom' , function(id){
     console.log(" Id recieved " + id);
     var room = rooms[id];
-    //if (people[socket.id].inroom !== null)
-     //{ //make sure that one person joins one room at a time
-    //   socket.emit('update', "You are already in a room ("+rooms[people[socket.id].inroom].name+"), please leave it first to join another room.");
-     //}
-     //else
-     //{
+    if (people[socket.id].room !== null)
+     { //make sure that one person joins one room at a time
+       socket.emit('update', "You are already in a room ("+rooms[people[socket.id].room].name+"), please leave it first to join another room.");
+     }
+     else
+     {
        room.addPerson(socket.id);
        people[socket.id].inroom = id;
        socket.room = room.name;
@@ -59,7 +58,7 @@ io.on('connection', function(socket){
        socket.emit('update', "Welcome to " + room.name + ".");
        socket.emit("sendRoomID", {id: id});
        console.log(user.name + " has joined the room " + room.name);
-     //}
+     }
   });
   socket.on('chat-message' , function(msg,playerName){
     io.sockets.in(socket.room).emit('chat-message' ,playerName + " : " + msg);
@@ -71,6 +70,7 @@ io.on('connection', function(socket){
     socket.broadcast.emit('getnewgame',name);
   });
   socket.on('newgame' , function(word , playerName){
+    console.log("newgame ping recieved");
     socket.broadcast.emit('newgame',word , playerName);
   });
   socket.on('gamereset' , function(){
