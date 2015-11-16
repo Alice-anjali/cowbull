@@ -2,7 +2,7 @@ var sendWord;
 var connected = false;
 var room;
 var multi =false;
-var opponentName;
+var opponentName = null;
 var roomlist = {};
 var recievedword;
 jQuery(document).ready(function($){
@@ -11,6 +11,7 @@ jQuery(document).ready(function($){
   $('.sendwordbox').hide();
   $('#chatbox').hide();
   $('.acceptwordbox').hide();
+  $('.exitroom').hide();
   playerName = prompt("Enter your Name");
   $('.info').prepend("<br>Hello "+playerName);
   multi = confirm("Do you want to play multiplayer ? ");
@@ -23,6 +24,7 @@ jQuery(document).ready(function($){
     $('.joinroomdiv').show();
     $('.game').hide();
     $('#inputbox').hide();
+    $('.reset').hide();
   }
   else
   {
@@ -35,11 +37,7 @@ jQuery(document).ready(function($){
     }while(!check(temp));
     startagame(temp);
   }
-  //if(multi && !connected)
-  //{
-  //  $('#inputbox').hide();
-  //  socket.emit('getnewgame' , playerName);
-  // }
+
 });
 socket.on('addroomlist' , function(name , id){
   roomlist[name] = id;
@@ -47,27 +45,35 @@ socket.on('addroomlist' , function(name , id){
   if(id!==undefined)
     $('#roomlist').append('<li>' + name + '</li>');
 });
+socket.on('clearroomlist',function(){
+  $('#roomlist').text('');
+});
 var createroom = function(){
   var ele = document.getElementById('createroominput');
-  socket.emit('createroom',ele.value);
+  socket.emit('trycreateroom',ele.value);
   ele.value ='';
+};
+socket.on('createroom',function(name){
   $('#chatbox').show();
   $('.sendwordbox').show();
   $('.createroomdiv').hide();
   $('.joinroomdiv').hide();
-  $('#roomname').text(ele.value);
-};
+  $('.exitroom').show();
+  $('#roomname').text(name);
+});
 var joinroom = function(){
   var ele = document.getElementById('joinroominput');
-  console.log(" Sending value " + ele.value + "  " + roomlist[ele.value]);
-  socket.emit('joinRoom',roomlist[ele.value]);
+  socket.emit('tryjoinRoom',roomlist[ele.value]);
+  ele.value ='';
+}
+socket.on('joinroom',function(name){
   $('#chatbox').show();
   $('.sendwordbox').show();
   $('.createroomdiv').hide();
   $('.joinroomdiv').hide();
-  $('#roomname').text(ele.value);
-  ele.value ='';
-}
+  $('.exitroom').show();
+  $('#roomname').text(name);
+});
 var sendnewWord = function()
 {
   var ele = document.getElementById('inputsendbox');
@@ -82,13 +88,25 @@ var sendnewWord = function()
     $('#inputsendbox').css('border-color' , 'red');
   }
 }
+var exitroom = function(){
+  $('.createroomdiv').show();
+  $('.joinroomdiv').show();
+  $('.game').hide();
+  $('#inputbox').hide();
+  $('.reset').hide();
+  $('.exitroom').hide();
+  $('.sendwordbox').hide();
+  $('#roomname').text("No-one");
+  socket.emit('exitroom');
+};
 var acceptnewWord = function(){
   startagame(recievedword);
   $('.acceptwordbox').hide();
-}
+  socket.emit('notify', playerName + " Accepted word from " + opponentName);
+};
 var rejectnewWord = function(){
   $('.acceptwordbox').hide();
-}
+};
 var reset = function(){
   if(!multi)
   {
@@ -106,11 +124,12 @@ var reset = function(){
   }
   else
   {
-    socket.emit('askgamereset');
+    $('.game').hide();
+    $('#inputbox').hide();
+    $('.reset').hide();
+    socket.emit('notify' , playerName + " has surrendered " + opponentName + " word ");
+    game = 0;
   }
-};
-var initializegame = function(){
-  game = 1;
 };
 socket.on('newgame',function(word , playerName){
   if(game==0)
@@ -118,22 +137,13 @@ socket.on('newgame',function(word , playerName){
     $('#recievedfromtext').text("A new Word is recieved from " + playerName);
     $('.acceptwordbox').show();
     recievedword = word;
-    console.log('recieved : ' + word);
+    opponentName = playerName;
   }
 });
-socket.on('gamereset',function(){
-  game =1;
-  noOfAns = 0;
-  document.getElementById('titleqstn').innerHTML = "_ _ _ _";
-  $('.game').css('border-color' , 'black');
-  $('#titleqstn').css('color' , 'black');
-  $('#titlemarks').css('color' , 'black');
-  $('#inputbox').show();
-  $('.markslist').children().remove();
-  $('.answerlist').children().remove();
-  sendWord = prompt("Enter the hidden word ! ").toUpperCase();
-  socket.emit('getnewgame',playerName);
-});
+
 socket.on('message',function(msg){
+  $('.info').append("<br>"+msg);
+});
+socket.on('update',function(msg){
   $('.info').append("<br>"+msg);
 });

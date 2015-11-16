@@ -9,3 +9,7 @@ socket.on('chat-message', function(msg){
   $('#messages').append($('<li>').text(msg));
   $('#messages').scrollTop($('#messages')[0].scrollHeight);
 });
+socket.on('notify',function(msg){
+  $('#messages').append($('<li>').text(msg));
+  $('#messages').scrollTop($('#messages')[0].scrollHeight);
+});

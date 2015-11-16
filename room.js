@@ -9,4 +9,7 @@ Room.prototype.addPerson = function(personID){
     this.people.push(personID);
   }
 };
+Room.prototype.removePerson = function(personID){
+    this.people.splice(personID,1);
+};
 module.exports = Room;

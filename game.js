@@ -18,6 +18,7 @@ var startagame = function(pword)
   $('.game').show();
   $('#inputbox').show();
   $('acceptwordbox').show();
+  $('.reset').show();
 };
 
 var newword = function(ele) {
@@ -83,7 +84,7 @@ var checkwin = function(){
     $('#titleqstn').css('color' , 'green');
     $('#titlemarks').css('color' , 'green');
     document.getElementById('titleqstn').innerHTML = mainWord;
-    //socket.emit('message' , playerName + " has won in  " + noOfAns + " tries !");
+    socket.emit('notify' , playerName + " solved " + opponentName + ' word in '+noOfAns+' tries');
   }
   else if (noOfAns == 9)
   {
@@ -93,6 +94,6 @@ var checkwin = function(){
     document.getElementById('titleqstn').innerHTML = mainWord;
     $('#titleqstn').css('color' , 'red');
     $('#titlemarks').css('color' , 'red');
-    //socket.emit('message' , playerName + " has lost !");
+    socket.emit('notify' , playerName + " lost the word given by " + opponentName);
   }
 };
