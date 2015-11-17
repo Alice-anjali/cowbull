@@ -1,15 +1,21 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var CryptoJS = require('./hashserver.js');
 var rooms = {};
 var people = {};
 var clients = [];
 var Room = require('./room.js');
 var uuid = require('node-uuid');
-app.get('/', function(req, res){
+/*app.get('/', function(req, res){
   res.sendfile('index.html');
-});
-app.use(require('express').static(__dirname));
+});*/
+app.use(require('express').static(__dirname+'/public'));
+var showhash = function(hash)
+{
+  for(var i=0 ; i<4;i++)
+    console.log(" / " + hash[i]);
+}
 io.on('connection', function(socket){
   socket.on('join' , function(name){
     roomId = null;
@@ -110,9 +116,14 @@ io.on('connection', function(socket){
   socket.on('message' , function(msg){
     io.sockets.in(socket.room).emit('message' , msg);
   });
-  socket.on('newgame' , function(word , playerName){
-    console.log("newgame ping recieved");
-    socket.broadcast.in(socket.room).emit('newgame',word , playerName);
+  socket.on('trynewgame' , function(word , playerName){
+    console.log(people[socket.id].name + " sent the word " + word + " to room "+ socket.room);
+    var hash = [];
+    for(var i=0;i<4;i++)
+      hash[i] = CryptoJS.CryptoJS.SHA256(word[i]).toString();
+    showhash(hash);
+    //socket.broadcast.in(socket.room).emit('newgame',playerName,JSON.stringify(hash));
+    socket.broadcast.in(socket.room).emit('newgame',playerName,JSON.stringify(hash));
   });
 
   socket.on('notify' , function(msg){

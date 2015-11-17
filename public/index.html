@@ -1,0 +1,83 @@
+<html>
+<head>
+  <script type="text/javascript" src="jquery-1.11.0.min.js"></script>
+  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+  <script>
+   	var socket = io();
+		</script>
+  <link rel="stylesheet" type="text/css" href="./CSS/main.css" />
+    <script type="text/javascript" src="./hash.js"></script>
+    <script type="text/javascript" src="./game.js"></script>
+    <script type="text/javascript" src="./main.js"></script>
+    <script type="text/javascript" src="./chatbox.js"></script>
+</head>
+<body>
+  <div id='title'>COW - BULL</div>
+  <div class='info'>
+    <br>
+    <div class="sendwordbox">
+      Type a word to send to the room !
+      <br><br>
+      <input id="inputsendbox"/>
+      <button id='boxsendbutton' onclick = "sendnewWord()">Send</button>
+    </div>
+    <div class="acceptwordbox">
+      <div id='recievedfromtext'></div>
+      <button id='acceptbutton' onclick = "acceptnewWord()">Accept</button>
+      <button id='rejectbutton' onclick = "rejectnewWord()">Reject</button>
+    </div>
+    <br><br>
+    <div class='createroomdiv'>
+      Input here to create a new room.
+      <input id='createroominput'/>
+      <button id='createroombutton' onclick="createroom()">
+        Create
+      </button>
+    </div>
+    <div class='joinroomdiv'>
+      Type the name of a room to join.
+      <input id='joinroominput'/>
+      <button id='joinroombutton' onclick="joinroom()">
+        Join
+      </button>
+      <br>Available Rooms :
+      <ul id='roomlist'></ul>
+    </div>
+    <div class='exitroom'>
+      <button id='exitroom' onclick="exitroom()">EXIT</button>
+    </div>
+  </div>
+  <div class='game'>
+    <div id="titleqstn">_ _ _ _</div>
+    <div id="titlemarks">C/B</div>
+    <div id="answers">
+      <div class = "container1">
+        <div id = "suggestions">
+          <ol class= "answerlist">
+          </ol>
+        </div>
+      </div>
+      <div class = "container2">
+        <div id = "marks">
+          <ul style="list-style-type:none" class="markslist">
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class = "container3">
+    <input type = "text" id = "inputbox" placeholder=" Enter word here" onkeydown="newword(this)"/>
+    <br><br>
+    <center><button class='reset' onclick="reset()">Reset</button></center>
+    <br><br>
+    <div id = 'connect'>Connected with : <div id='roomname'>No-one</div></div>
+    <br><br>
+    <div id='chatbox'>
+      <ul id='messages'>
+      </ul>
+        <input id="m" autocomplete="off" /><button id='sendbutton' onclick = "sendmessage()">Send</button>
+    </div>
+    </div>
+  </div>
+</body>
+</html>
