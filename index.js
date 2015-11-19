@@ -7,6 +7,8 @@ var people = {};
 var clients = [];
 var Room = require('./room.js');
 var uuid = require('node-uuid');
+var dictionary = {};
+var fs = require('fs');
 /*app.get('/', function(req, res){
   res.sendfile('index.html');
 });*/
@@ -22,6 +24,7 @@ io.on('connection', function(socket){
     people[socket.id] = {"name" : name , "room" : roomId};
     console.log("Player " + name + " connected");
     socket.emit('update-people' , people);
+    socket.emit('getdictionary',dictionary);
     //socket.emit('addroomlist' , {rooms : rooms});
     clients.push(socket);
     for (var roomid in rooms) {
@@ -62,7 +65,7 @@ io.on('connection', function(socket){
     }
   });
   socket.on('tryjoinRoom' , function(id){
-    console.log(" Id recieved " + id);
+    //console.log(" Id recieved " + id);
     var room = rooms[id];
     if (people[socket.id].room !== null)
      { //make sure that one person joins one room at a time
@@ -121,7 +124,7 @@ io.on('connection', function(socket){
     var hash = [];
     for(var i=0;i<4;i++)
       hash[i] = CryptoJS.CryptoJS.SHA256(word[i]).toString();
-    showhash(hash);
+    //showhash(hash);
     //socket.broadcast.in(socket.room).emit('newgame',playerName,JSON.stringify(hash));
     socket.broadcast.in(socket.room).emit('newgame',playerName,JSON.stringify(hash));
   });
@@ -153,4 +156,13 @@ var server_port = process.env.OPENSHIFT_NODEJS_PORT || 3000;
 var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 http.listen(server_port , server_ip_address, function(){
   console.log('listening');
+  fs.readFile("Dictionary.txt" , 'UTF-8' ,  function(err,data){
+    if(err)
+      console.log(err);
+    var temp;
+    temp = data.split("\r\n");
+    for(var i=0;i<temp.length;i++)
+      dictionary[temp[i]] = true;
+    console.log('OK: ');
+  });
 });

@@ -4,6 +4,7 @@ var currAns = [] , tryhash = [];
 var cow=0 , bull=0;
 var game =0;
 var playerName;
+var dictionary = {};
 /*var showhash = function(hash)
 {
   console.log(hash[0]);
@@ -63,7 +64,11 @@ var check = function(ans){
       }
     }
   }
-  return 1;
+  if(dictionary[ans])
+    return 1;
+  else {
+    return 0;
+  }
 };
 var generatecb = function(word){
   //showhash(tryhash);

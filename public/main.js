@@ -41,9 +41,15 @@ jQuery(document).ready(function($){
 });
 socket.on('addroomlist' , function(name , id){
   roomlist[name] = id;
-  console.log(' Room ' + name + " created with id " + id);
+  //console.log(' Room ' + name + " created with id " + id);
   if(id!==undefined)
     $('#roomlist').append('<li>' + name + '</li>');
+});
+socket.on('getdictionary',function(words){
+  Object.keys(words).forEach(function(key) {
+     dictionary[ key ] = words[ key ];
+   });
+  console.log(dictionary);
 });
 socket.on('clearroomlist',function(){
   $('#roomlist').text('');
@@ -78,7 +84,7 @@ var sendnewWord = function()
 {
   var ele = document.getElementById('inputsendbox');
   console.log(" Sending word : " + ele.value);
-  if(check(ele.value)){
+  if(check(ele.value.toUpperCase())){
     sendWord = ele.value.toUpperCase();
     socket.emit('trynewgame' , sendWord , playerName);
     $('#inputsendbox').css('border-color' , 'green');
@@ -135,6 +141,7 @@ socket.on('newgame',function(playerName,hash){
 
   hash = JSON.parse(hash);
   //console.log(hash[0]);
+  //log(dictionary);
   if(game==0)
   {
     $('#recievedfromtext').text("A new Word is recieved from " + playerName);
@@ -142,7 +149,6 @@ socket.on('newgame',function(playerName,hash){
     //showhash(hash);
     for(var i=0;i<4;i++)
       hashMainWord[i]=hash[i];
-    console.log(hashMainWord);
     opponentName = playerName;
   }
 });
