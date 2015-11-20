@@ -46,6 +46,7 @@ socket.on('addroomlist' , function(name , id){
     $('#roomlist').append('<li>' + name + '</li>');
 });
 socket.on('getdictionary',function(words){
+  console.log(words);
   Object.keys(words).forEach(function(key) {
      dictionary[ key ] = words[ key ];
    });
