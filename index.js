@@ -160,7 +160,7 @@ http.listen(server_port , server_ip_address, function(){
     if(err)
       console.log(err);
     var temp;
-    temp = data.split("\r\n");
+    temp = data.split("\n");
     for(var i=0;i<temp.length;i++)
       dictionary[temp[i]] = true;
     console.log('OK: ');
