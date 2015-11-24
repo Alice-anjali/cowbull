@@ -164,6 +164,6 @@ http.listen(server_port , server_ip_address, function(){
     for(var i=0;i<temp.length;i++)
       dictionary[temp[i]] = true;
     console.log('OK: ');
-    console.log(dictionary);
+    //console.log(dictionary);
   });
 });

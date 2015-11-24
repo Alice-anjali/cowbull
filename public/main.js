@@ -46,11 +46,11 @@ socket.on('addroomlist' , function(name , id){
     $('#roomlist').append('<li>' + name + '</li>');
 });
 socket.on('getdictionary',function(words){
-  console.log(words);
+  //console.log(words);
   Object.keys(words).forEach(function(key) {
      dictionary[ key ] = words[ key ];
    });
-  console.log(dictionary);
+  //console.log(dictionary);
 });
 socket.on('clearroomlist',function(){
   $('#roomlist').text('');
